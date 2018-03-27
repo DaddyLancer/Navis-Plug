@@ -1,6 +1,9 @@
 ﻿Imports Autodesk.Navisworks.Api
 
+
 Public Class Form1
+    Dim nApp As Application
+
     Private Sub Form1_Load(sender As Object, e As EventArgs) Handles MyBase.Load
 
     End Sub
@@ -45,12 +48,20 @@ Public Class Form1
 
     Private Sub Button1_Click(sender As Object, e As EventArgs) Handles Button1.Click
         Dim rootItem As ModelItem
-        Me.Text = Application.ActiveDocument.CurrentFileName
-        rootItem = Application.ActiveDocument.Models(0).RootItem
         Dim oRootNode As TreeNode
-        oRootNode = TreeView1.Nodes.Add(rootItem.DisplayName)
-        oRootNode.Tag = rootItem
+        Try
+            Me.Text = Application.ActiveDocument.CurrentFileName
+            rootItem = Application.ActiveDocument.Models(0).RootItem
 
-        Recurse(rootItem, oRootNode)
+            oRootNode = TreeView1.Nodes.Add(rootItem.DisplayName)
+            oRootNode.Tag = rootItem
+            Recurse(rootItem, oRootNode)
+        Catch ex As Exception
+            Diagnostics.Debug.Print(ex.ToString)
+        End Try
+
+
+
+
     End Sub
 End Class
